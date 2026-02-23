@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modal</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body class="bg-gray-800 h-svh " > 
+
+    <div class="flex items-center justify-center h-full">
+        <button class="px-6 py-3 bg-pink-600 text-white rounded font-semibold" id="openModal">Open Modal</button>
+
+        <!-- Modal -->
+        <div class=" absolute w-full hidden" id="modal">
+            <div class=" p-6 rounded shadow-lg flex flex-col w-6/12 mx-auto bg-white gap-4 overflow-auto ">
+                <h2 class="text-xl font-bold mb-4">Are You a Programmer!!</h2>
+                <label for="isProgrammer" class="mb-2"><input type="radio" name="programmer" id="isProgrammer"> Yes, I am a programmer</label>
+                <label for="notProgrammer" class="mb-2"><input type="radio" name="programmer" id="notProgrammer"> No, I am not a programmer</label>
+                <button class="px-4 py-2 bg-red-500 text-white font-semibold rounded-full" id="closeModal">Close Modal</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const openModalButton = document.getElementById("openModal");
+        const closeModalButton = document.getElementById("closeModal");
+        const modal = document.getElementById("modal");
+
+        openModalButton.addEventListener("click", () => {
+            modal.classList.remove("hidden");
+        });
+
+        closeModalButton.addEventListener("click", () => {
+            modal.classList.add("hidden");
+        });
+    </script>
+    
+</body>
+</html>

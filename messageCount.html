@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Message count</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body class="bg-gray-100">
+    <div class="w-6/12  mx-auto mt-15 border border-gray-300 bg-white">
+        <textarea id="messageArea" class="w-full outline-none p-4 min-h-70"></textarea>
+        <div class="p-4 flex gap-10 border-t border-gray-300 text-gray-600">
+            <p class="font-semibold">Letter: <span id="letterCount">0</span></p>
+            <p class="font-semibold">Sms: <span id="smsCount">0</span></p>
+        </div>
+    </div>
+
+    <script>
+        const messageArea = document.getElementById('messageArea');
+        const letterCount = document.getElementById('letterCount');
+        const smsCount = document.getElementById('smsCount');
+        
+        messageArea.addEventListener('input', () => {
+            const text = messageArea.value;
+            const letterCountValue = text.length;
+            const smsCountValue = Math.ceil(letterCountValue / 160);
+            
+            letterCount.textContent = letterCountValue;
+            smsCount.textContent = smsCountValue;
+        });
+
+
+
+    </script>
+    
+</body>
+</html>
