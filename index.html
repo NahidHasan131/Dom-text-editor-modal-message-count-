@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editor</title>
+    <!-- Font Awesome -->
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body class="bg-gray-100">
+
+    <section class="w-8/12  mx-auto mt-15 border border-gray-300 bg-white">
+        <div class="border-b border-gray-300 flex items-center p-4 gap-6 text-gray-500">
+            <div class="flex gap-5 font-semibold">
+                <select name="font-family" id="fontFamily">
+                    <option value="Sans Serif">Sans Serif</option>
+                    <option value="Arial">Arial</option>
+                    <option value="Times New Roman">Times New Roman</option>
+                    <option value="Poppins">Poppins</option>
+                </select>
+                <select name="font-weight" id="fontWeight">
+                    <option value="normal">Normal</option>
+                    <option value="600">SemiBold</option>
+                    <option value="bold">Bold</option>
+                    <option value="900">Extra Bold</option>
+                </select>
+            </div>
+
+            <div class="flex gap-3">
+                <button id="fontBold" class="cursor-pointer hover:bg-gray-200 px-2 py-1 rounded"><i class="fa-solid fa-bold"></i></button>
+                <button id="fontItalic" class="cursor-pointer hover:bg-gray-200 px-2 py-1 rounded"><i class="fa-solid fa-italic"></i></button>
+                <button id="fontUnderline" class="cursor-pointer hover:bg-gray-200 px-2 py-1 rounded"><i class="fa-solid fa-underline"></i></button>
+                <button id="fontStrikethrough" class="cursor-pointer hover:bg-gray-200 px-2 py-1 rounded"><i class="fa-solid fa-strikethrough"></i></button>
+            </div>
+
+            <div class="flex gap-3">
+                <label class="cursor-pointer">
+                    <i class="fa-solid fa-a"></i>
+                    <input type="color" id="text-color" hidden>
+                </label>
+                <label class="cursor-pointer">
+                    <i class="fa-solid fa-highlighter"></i>
+                    <input type="color" id="highlight-color" hidden>
+                </label>
+            </div>
+
+            <div class="flex gap-3">
+                <button id="subscript" class="cursor-pointer"><i class="fa-solid fa-subscript"></i></button>
+                <button id="superscript" class="cursor-pointer"><i class="fa-solid fa-superscript"></i></button>
+            </div>
+
+            <div class="flex gap-3">
+                <button id="alignLeft" class="cursor-pointer"><i class="fa-solid fa-align-left"></i></button>
+                <button id="alignCenter" class="cursor-pointer"><i class="fa-solid fa-align-center"></i></button>
+                <button id="alignRight" class="cursor-pointer"><i class="fa-solid fa-align-right"></i></button>
+            </div>
+
+            <div class="flex gap-3">
+                <button id="list-ol" class="cursor-pointer"><i class="fa-solid fa-list-ol"></i></button>
+                <button id="list-ul" class="cursor-pointer"><i class="fa-solid fa-list"></i></button>
+            </div>
+
+            <div class="flex gap-3">
+                <button id="outdent" class="cursor-pointer"><i class="fa-solid fa-outdent"></i></button>
+                <button id="indent" class="cursor-pointer"><i class="fa-solid fa-indent"></i></button>
+            </div>
+
+        </div>
+        <div id="Editor-textArea" contenteditable="true" class="w-full h-90 outline-none p-4 min-h-96"></div>
+    </section>
+
+    <script>
+        const editor = document.getElementById('Editor-textArea');
+        
+        document.querySelectorAll('button, label').forEach(btn => {
+            btn.addEventListener('mousedown', (e) => {
+                e.preventDefault();
+            });
+        });
+
+        const fontFamily = document.getElementById('fontFamily');
+        const fontWeight = document.getElementById('fontWeight');
+
+        fontFamily.addEventListener('change', (e)=>{
+            document.execCommand('fontName', false, e.target.value);
+            editor.focus();
+        })
+
+        fontWeight.addEventListener('change', (e)=>{
+            const weight = e.target.value;
+            const selection = window.getSelection();
+            
+            if (selection.rangeCount > 0 && selection.toString()) {
+                // Save the selection
+                const range = selection.getRangeAt(0);
+                
+                // Create a span with font-weight
+                const span = document.createElement('span');
+                span.style.fontWeight = weight;
+                span.style.display = 'inline';
+                
+                // Extract and wrap the selected content
+                const fragment = range.extractContents();
+                span.appendChild(fragment);
+                range.insertNode(span);
+                
+                // Restore selection
+                range.selectNodeContents(span);
+                selection.removeAllRanges();
+                selection.addRange(range);
+            }
+            editor.focus();
+        })
+
+        const fontBold = document.getElementById('fontBold');
+        const fontItalic = document.getElementById('fontItalic');
+        const fontUnderline = document.getElementById('fontUnderline');
+        const fontStrikethrough = document.getElementById('fontStrikethrough');
+
+        fontBold.addEventListener('click', ()=>{
+            document.execCommand('bold', false, null);
+        })
+
+        fontItalic.addEventListener('click', ()=>{
+            document.execCommand('italic', false, null);
+        })
+
+        fontUnderline.addEventListener('click', ()=>{
+            document.execCommand('underline', false, null);
+        })
+
+        fontStrikethrough.addEventListener('click', ()=>{
+            document.execCommand('strikeThrough', false, null);
+        })
+
+        const textColor = document.getElementById('text-color');
+        const highlightColor = document.getElementById('highlight-color');    
+        textColor.addEventListener('input', (e)=>{
+            document.execCommand('foreColor', false, e.target.value);
+        });
+
+        highlightColor.addEventListener('input', (e)=>{
+            document.execCommand('backColor', false, e.target.value);
+        });
+
+        const subscript = document.getElementById('subscript');
+        const superscript = document.getElementById('superscript');    
+        subscript.addEventListener('click', ()=>{
+            document.execCommand('subscript', false, null);
+        })
+
+        superscript.addEventListener('click', ()=>{
+            document.execCommand('superscript', false, null);
+        })
+
+        const alignLeft = document.getElementById('alignLeft');
+        const alignCenter = document.getElementById('alignCenter');
+        const alignRight = document.getElementById('alignRight');       
+        alignLeft.addEventListener('click', ()=>{
+            document.execCommand('justifyLeft', false, null);
+        })
+        
+        alignCenter.addEventListener('click', ()=>{
+            document.execCommand('justifyCenter', false, null);
+        })
+        
+        alignRight.addEventListener('click', ()=>{
+            document.execCommand('justifyRight', false, null);
+        })
+
+        const listOl = document.getElementById('list-ol');
+        const listUl = document.getElementById('list-ul');
+        
+        listOl.addEventListener('click', ()=>{
+            document.execCommand('insertOrderedList', false, null);
+        })      
+        
+        listUl.addEventListener('click', ()=>{
+            document.execCommand('insertUnorderedList', false, null);
+        })
+
+        const outdent = document.getElementById('outdent');
+        const indent = document.getElementById('indent');
+        
+        outdent.addEventListener('click', ()=>{
+            const selection = window.getSelection();
+            if (selection.rangeCount > 0) {
+                let node = selection.anchorNode;
+                
+                // Get the actual element node
+                if (node.nodeType === 3) { // Text node
+                    node = node.parentElement;
+                }
+                
+                // Don't apply to the editor itself
+                if (node === editor) return;
+                
+                const currentMargin = parseInt(window.getComputedStyle(node).marginLeft) || 0;
+                if (currentMargin >= 40) {
+                    node.style.marginLeft = (currentMargin - 40) + 'px';
+                }
+            }
+            editor.focus();
+        })
+        
+        indent.addEventListener('click', ()=>{
+            const selection = window.getSelection();
+            if (selection.rangeCount > 0) {
+                let node = selection.anchorNode;
+                
+                // Get the actual element node
+                if (node.nodeType === 3) { // Text node
+                    node = node.parentElement;
+                }
+                
+                // Don't apply to the editor itself
+                if (node === editor) return;
+                
+                const currentMargin = parseInt(window.getComputedStyle(node).marginLeft) || 0;
+                node.style.marginLeft = (currentMargin + 40) + 'px';
+            }
+            editor.focus();
+        })
+
+        // Update toolbar based on current selection
+        function updateToolbar() {
+            const isBold = document.queryCommandState('bold');
+            const isItalic = document.queryCommandState('italic');
+            const isUnderline = document.queryCommandState('underline');
+            const isStrike = document.queryCommandState('strikeThrough');
+            const isSubscript = document.queryCommandState('subscript');
+            const isSuperscript = document.queryCommandState('superscript');
+
+            if (isBold) {
+                fontBold.classList.add('bg-blue-200');
+            } else {
+                fontBold.classList.remove('bg-blue-200');
+            }
+
+            if (isItalic) {
+                fontItalic.classList.add('bg-blue-200');
+            } else {
+                fontItalic.classList.remove('bg-blue-200');
+            }
+
+            if (isUnderline) {
+                fontUnderline.classList.add('bg-blue-200');
+            } else {
+                fontUnderline.classList.remove('bg-blue-200');
+            }
+
+            if (isStrike) {
+                fontStrikethrough.classList.add('bg-blue-200');
+            } else {
+                fontStrikethrough.classList.remove('bg-blue-200');
+            }
+
+            if (isSubscript) {
+                subscript.classList.add('bg-blue-200');
+            } else {
+                subscript.classList.remove('bg-blue-200');
+            }
+
+            if (isSuperscript) {
+                superscript.classList.add('bg-blue-200');
+            } else {
+                superscript.classList.remove('bg-blue-200');
+            }
+        }
+
+        document.addEventListener('selectionchange', updateToolbar);
+        editor.addEventListener('keyup', updateToolbar);
+        editor.addEventListener('mouseup', updateToolbar);
+    </script>
+    
+</body>
+</html>
