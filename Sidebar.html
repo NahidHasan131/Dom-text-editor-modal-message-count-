@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sidebar Drawer</title>  
+    <!-- Font Awesome -->
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body>
+    <div class="flex h-screen">
+        <!-- Sidebar -->
+        <div class="w-64 bg-gray-800 text-white p-4">
+            <div class="flex justify-between items-center text-2xl mb-6">
+                <h2 id="logo-hide" class="font-bold">Logo</h2>
+                <button id="drawerBtn" class="cursor-pointer"><i class="fa-regular fa-square-caret-left"></i></button>
+
+            </div>
+            <ul>
+                <li class="mb-4"><a href="#" class="flex items-center gap-2 hover:text-gray-300"><i class="fas fa-home"></i> <span class="drawer-hidden">Home</span></a></li>
+                <li class="mb-4"><a href="#" class="flex items-center gap-2 hover:text-gray-300"><i class="fas fa-user"></i> <span class="drawer-hidden">Profile</span></a></li>
+                <li class="mb-4"><a href="#" class="flex items-center gap-2 hover:text-gray-300"><i class="fas fa-cog"></i> <span class="drawer-hidden">Settings</span></a></li>
+                <li class="mb-4"><a href="#" class="flex items-center gap-2 hover:text-gray-300"><i class="fas fa-sign-out-alt"></i> <span class="drawer-hidden">Logout</span></a></li>
+            </ul>
+        </div>
+        <!-- Main Content -->
+        <div class="flex-1 p-6">
+            <h1 class="text-3xl font-bold mb-4">Main Content</h1>
+            <p>This is the main content area. You can add your content here.</p>   
+        </div>
+    </div>
+
+    <script>
+        const drawerBtn = document.getElementById('drawerBtn');
+        const sidebar = document.querySelector('.w-64');
+        const drawerHidden = document.querySelectorAll('.drawer-hidden');
+        const logoHide = document.getElementById('logo-hide');
+
+        drawerBtn.addEventListener('click', () => {
+            sidebar.classList.toggle('w-64');
+            sidebar.classList.toggle('w-16');
+            drawerHidden.forEach(item => item.classList.toggle('hidden'));
+            logoHide.classList.toggle('hidden');
+        });
+    </script>
+    
+</body>
+</html>
